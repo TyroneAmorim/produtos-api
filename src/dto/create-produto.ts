@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDecimal,
   IsEAN,
   IsNotEmpty,
   IsNumber,
@@ -11,7 +10,6 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { IsNull } from 'typeorm';
 
 export class CreateProdutoDto {
   @ApiProperty({
