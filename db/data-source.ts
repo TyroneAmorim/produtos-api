@@ -1,7 +1,9 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 export const AppDataSource = new DataSource({
   type: 'mariadb',
