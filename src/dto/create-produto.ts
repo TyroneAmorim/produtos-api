@@ -1,0 +1,49 @@
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsEAN,
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  IsOptional,
+  IsPositive,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
+
+export class CreateProdutoDto {
+  @ApiProperty({
+    description: 'Nome do produto',
+    example: 'Produto 1',
+  })
+  @IsString()
+  @IsNotEmpty()
+  nome: string;
+
+  @ApiProperty({
+    description: 'Preco',
+    example: '100.50',
+  })
+  @IsNumber()
+  @IsPositive()
+  preco: number;
+
+  @ApiProperty({
+    description: 'Código de barras',
+    example: '1234567890123',
+  })
+  @MaxLength(13)
+  @IsEAN({ message: 'O código de barras precisa ser válido' })
+  @IsNumberString()
+  @IsOptional()
+  codigo_barras: string;
+
+  @ApiProperty({
+    description: 'Quantidade',
+    example: '1',
+  })
+  @IsPositive()
+  @IsNumber()
+  @Min(1)
+  quantidade: number;
+}
