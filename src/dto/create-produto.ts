@@ -1,5 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDecimal, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDecimal,
+  IsEAN,
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  IsOptional,
+  IsPositive,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
+import { IsNull } from 'typeorm';
 
 export class CreateProdutoDto {
   @ApiProperty({
@@ -14,20 +26,26 @@ export class CreateProdutoDto {
     description: 'Preco',
     example: '100.50',
   })
-  @IsDecimal()
+  @IsNumber()
+  @IsPositive()
   preco: number;
 
   @ApiProperty({
     description: 'Código de barras',
     example: '1234567890123',
   })
-  @IsString()
+  @MaxLength(13)
+  @IsEAN({ message: 'O código de barras precisa ser válido' })
+  @IsNumberString()
+  @IsOptional()
   codigo_barras: string;
 
   @ApiProperty({
     description: 'Quantidade',
     example: '1',
   })
-  @IsDecimal()
+  @IsPositive()
+  @IsNumber()
+  @Min(1)
   quantidade: number;
 }

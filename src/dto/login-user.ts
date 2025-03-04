@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsStrongPassword,
+} from 'class-validator';
 
 export class LoginUserDto {
   @ApiProperty({
@@ -8,6 +13,7 @@ export class LoginUserDto {
   })
   @IsString()
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @ApiProperty({
@@ -16,5 +22,17 @@ export class LoginUserDto {
   })
   @IsString()
   @IsNotEmpty()
+  @IsStrongPassword(
+    {
+      minLength: 8,
+      minUppercase: 2,
+      minSymbols: 1,
+      minNumbers: 2,
+    },
+    {
+      message:
+        'O campo de senha precisa ter: 2 letras maiúsculas, 2 números, 2 símbolos e no mínimo 8 caracteres',
+    },
+  )
   senha: string;
 }
