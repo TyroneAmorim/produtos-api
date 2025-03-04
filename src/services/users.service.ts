@@ -18,8 +18,10 @@ export class UsersService {
 
     const exists = await this.findByEmail(createUserDto.email);
     if (exists) throw new ConflictException('Usuário já existe');
-    const produto = this.repository.create(createUserDto);
-    return this.repository.save(produto);
+    const user = this.repository.create(createUserDto);
+    const userSaved = await this.repository.save(user);
+    userSaved.senha = '';
+    return userSaved;
   }
 
   async findByEmail(email: string): Promise<User | null> {
