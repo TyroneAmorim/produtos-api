@@ -6,12 +6,19 @@ import {
   Post,
   Put,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/dto/create-user';
 import { UpdateUserDto } from 'src/dto/update-user';
 import { JwtAuthGuard } from 'src/modules/auth/jwt-auth.guard';
 import { UsersService } from 'src/services/users.service';
+
+interface CustomRequest {
+  user: {
+    codigo: string;
+  };
+}
 
 @ApiBearerAuth()
 @Controller('users')
@@ -26,12 +33,15 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Atualiza os dados de cadastro de um usuário' })
-  @Put(':codigo')
+  @Put()
   async update(
-    @Param('codigo') codigo: string,
     @Body() updateUserDto: UpdateUserDto,
+    @Request() req: CustomRequest,
   ) {
-    const updated = await this.userService.update(codigo, updateUserDto);
+    const updated = await this.userService.update(
+      req.user.codigo,
+      updateUserDto,
+    );
     if (updated) return updated;
     else throw new NotFoundException('Usuário não encontrado');
   }

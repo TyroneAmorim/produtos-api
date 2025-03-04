@@ -32,7 +32,12 @@ export class UsersService {
     codigo: string,
     updateUserDto: UpdateUserDto,
   ): Promise<User | null> {
+    if (updateUserDto.senha) {
+      updateUserDto.senha = String(await bcrypt.hash(updateUserDto.senha, 10));
+    }
     await this.repository.update(codigo, updateUserDto);
-    return this.repository.findOneBy({ codigo });
+    const userUpdated = await this.repository.findOneBy({ codigo });
+    if (userUpdated) userUpdated.senha = '';
+    return userUpdated;
   }
 }
