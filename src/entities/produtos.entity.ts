@@ -11,7 +11,7 @@ export class Produto {
   @Column({ nullable: true })
   codigo_barras: string;
 
-  @Column('decimal', { precision: 10, scale: 3 })
+  @Column('int')
   quantidade: number;
 
   @Column('decimal', { precision: 10, scale: 2 })
